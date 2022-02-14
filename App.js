@@ -1,20 +1,84 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+/*
+* @bainloko, code courtesy of docs.expo.dev
+* DDM II
+* 14/02/2022
+*/
 
-export default function App() {
+import React, { useState } from 'react';
+import {
+  FlatList,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+
+const DATA = [
+  {
+    id: '00001-3',
+    title: 'Primeiro Item',
+  },
+  {
+    id: '00002-2',
+    title: 'Segundo Item',
+  },
+  {
+    id: '00003-1',
+    title: 'Terceiro Item',
+  },
+];
+
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.itemList, backgroundColor]}>
+    <Text style={[styles.titleList, textColor]}>{item.title}</Text>
+  </TouchableOpacity>
+);
+
+const App = () => {
+  const [selectedId, setSelectedId] = useState(null);
+
+  const renderItem = ({ item }) => {
+    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
+    const color = item.id === selectedId ? 'white' : 'black';
+
+    return (
+      <Item
+        item={item}
+        onPress={() => setSelectedId(item.id, alert('Você clicou no ' + item.title))}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.containerList}>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        extraData={selectedId}
+      />
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
+  containerList: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: StatusBar.currentHeight || 0,
+  },
+
+  itemList: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+
+  titleList: {
+    fontSize: 32,
   },
 });
+
+export default App;
