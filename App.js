@@ -1,31 +1,28 @@
 /*
 * @bainloko, code courtesy of docs.expo.dev
 * DDM II
-* 14/02/2022
+* 14/02/2022, 04/03/2022
 */
 
 import React, { useState } from 'react';
-import {
-  FlatList,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { FlatList, StatusBar, StyleSheet, Text, View, TouchableOpacity, } from 'react-native';
 
 const DATA = [
   {
     id: '00001-3',
-    title: 'Primeiro Item',
+    title: 'Pai',
   },
   {
     id: '00002-2',
-    title: 'Segundo Item',
+    title: 'Mãe',
   },
   {
     id: '00003-1',
-    title: 'Terceiro Item',
+    title: 'Irmão',
+  },
+  {
+    id: '00004-0',
+    title: 'Irmã',
   },
 ];
 
@@ -35,7 +32,7 @@ const Item = ({ item, onPress, backgroundColor, textColor }) => (
   </TouchableOpacity>
 );
 
-const App = () => {
+export default function App() {
   const [selectedId, setSelectedId] = useState(null);
 
   const renderItem = ({ item }) => {
@@ -45,7 +42,7 @@ const App = () => {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id, alert('Você clicou no ' + item.title))}
+        onPress={() => setSelectedId(item.id, alert('Você clicou no(a) ' + item.title))}
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
@@ -53,21 +50,21 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={styles.containerList}>
+    <View style={styles.containerList}>
+      <StatusBar />
       <FlatList
         data={DATA}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         extraData={selectedId}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   containerList: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    margin: StatusBar.currentHeight || 0,
   },
 
   itemList: {
@@ -80,5 +77,3 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
 });
-
-export default App;
